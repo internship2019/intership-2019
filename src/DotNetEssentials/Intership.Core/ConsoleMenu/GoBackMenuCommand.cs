@@ -2,14 +2,14 @@
 
 namespace Intership.Core.ConsoleMenu
 {
-	public class GoBackMenuItem : MenuItem
+	public class GoBackMenuCommand : MenuCommandBase
 	{
-		public GoBackMenuItem(MenuItem parent) : base("[GO BACK]")
+		public GoBackMenuCommand(IMenuCommand parent) : base("[GO BACK]")
 		{
 			Parent = parent ?? throw new ArgumentNullException(nameof(parent));
 		}
 
-		public override void Execute()
+		public override void ExecuteCore()
 		{
 			Parent.Execute();
 		}
