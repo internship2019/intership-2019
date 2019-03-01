@@ -10,7 +10,7 @@ namespace Intership.Core.ConsoleMenu
 		{
 		}
 
-		public override void ExecuteCore()
+		protected override void ExecuteCore()
 		{
 			Console.WriteLine("Press ENTER to exit...");
 			Console.ReadLine();

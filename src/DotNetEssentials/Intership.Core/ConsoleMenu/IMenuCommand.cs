@@ -1,11 +1,11 @@
 ﻿namespace Intership.Core.ConsoleMenu
 {
-    public interface IMenuCommand
-    {
-        string Name { get; }
+	public interface IMenuCommand
+	{
+		string Name { get; }
 
-        void Execute();
+		void Execute();
 
-        IMenuCommand Parent { get; set; }
-    }
+		IMenuCommand Parent { get; set; }
+	}
 }

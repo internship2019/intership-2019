@@ -9,7 +9,7 @@ namespace Intership.Core.ConsoleMenu
 			Parent = parent ?? throw new ArgumentNullException(nameof(parent));
 		}
 
-		public override void ExecuteCore()
+		protected override void ExecuteCore()
 		{
 			Parent.Execute();
 		}

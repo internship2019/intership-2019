@@ -2,39 +2,39 @@
 
 namespace Intership.Core.ConsoleMenu
 {
-    public abstract class MenuCommandBase : IMenuCommand
-    {
-        public string Name { get; }
+	public abstract class MenuCommandBase : IMenuCommand
+	{
+		public string Name { get; }
 
-        public IMenuCommand Parent { get; set; }
+		public IMenuCommand Parent { get; set; }
 
-        protected MenuCommandBase(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
+		protected MenuCommandBase(string name)
+		{
+			if (string.IsNullOrWhiteSpace(name))
+			{
+				throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+			}
 
-            Name = name;
-        }
+			Name = name;
+		}
 
-        public void Execute()
-        {
-            Console.Clear();
+		public void Execute()
+		{
+			Console.Clear();
 
-            ExecuteCore();
+			ExecuteCore();
 
-            var parent = Parent;
-            if (parent != null)
-            {
-                parent.Execute();
-            }
-            else
-            {
-                ExitMenuCommand.Instance.Execute();
-            }
-        }
+			var parent = Parent;
+			if (parent != null)
+			{
+				parent.Execute();
+			}
+			else
+			{
+				ExitMenuCommand.Instance.Execute();
+			}
+		}
 
-        public abstract void ExecuteCore();
-    }
+		protected abstract void ExecuteCore();
+	}
 }

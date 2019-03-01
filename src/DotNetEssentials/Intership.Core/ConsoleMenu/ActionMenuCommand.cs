@@ -12,11 +12,11 @@ namespace Intership.Core.ConsoleMenu
 			Parent = parent;
 		}
 
-		public override void ExecuteCore()
+		protected override void ExecuteCore()
 		{
 			command();
-            Console.WriteLine("Press ENTER to continue...");
-            Console.ReadLine();
-        }
+			Console.WriteLine("Press ENTER to continue...");
+			Console.ReadLine();
+		}
 	}
 }

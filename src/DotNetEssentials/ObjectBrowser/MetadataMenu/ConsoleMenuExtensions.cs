@@ -13,23 +13,23 @@ namespace ObjectBrowser.MetadataMenu
 		// keeps instance of StringBuilder per thread. Don't forget to clear it after usage ;-)
 		private static readonly ThreadLocal<StringBuilder> StringBuilderLocal = new ThreadLocal<StringBuilder>(() => new StringBuilder(64));
 
-        public static CompositeMenuCommand GetAssembliesMenuItem(this IEnumerable<Assembly> assemblies, string header, IMenuCommand parent = null)
+		public static CompositeMenuCommand GetAssembliesMenuItem(this IEnumerable<Assembly> assemblies, string header, IMenuCommand parent = null)
 		{
 			if (assemblies == null)
 			{
 				throw new ArgumentNullException(nameof(assemblies));
 			}
 
-            var result = new CompositeMenuCommand(header, parent ?? ExitMenuCommand.Instance);
+			var result = new CompositeMenuCommand(header, parent ?? ExitMenuCommand.Instance);
 
-            var commands = assemblies
-                .OrderBy(asm => asm.GetName().Name)
-                .Select(x => GetAssemblyTypesMenuItem(x, result));
+			var commands = assemblies
+				.OrderBy(asm => asm.GetName().Name)
+				.Select(x => GetAssemblyTypesMenuItem(x, result));
 
-            result.AddCommands(commands);
+			result.AddCommands(commands);
 
-            return result;
-        }
+			return result;
+		}
 
 		private static CompositeMenuCommand GetAssemblyTypesMenuItem(this Assembly assembly, IMenuCommand parent)
 		{
@@ -38,26 +38,26 @@ namespace ObjectBrowser.MetadataMenu
 				throw new ArgumentNullException(nameof(assembly));
 			}
 
-            var result = new CompositeMenuCommand(assembly.FullName, parent);
+			var result = new CompositeMenuCommand(assembly.FullName, parent);
 
-            result.AddCommands(assembly.GetExportedTypes().OrderBy(x => x.FullName).Select(x => GetTypeMenuItem(x, result)));
+			result.AddCommands(assembly.GetExportedTypes().OrderBy(x => x.FullName).Select(x => GetTypeMenuItem(x, result)));
 
-            return result;
-        }
+			return result;
+		}
 
-        private static CompositeMenuCommand GetTypeMenuItem(this Type type, IMenuCommand parent)
+		private static CompositeMenuCommand GetTypeMenuItem(this Type type, IMenuCommand parent)
 		{
 			if (type == null)
 			{
 				throw new ArgumentNullException(nameof(type));
 			}
 
-            var result = new CompositeMenuCommand(type.FullName, parent);
+			var result = new CompositeMenuCommand(type.FullName, parent);
 
-            result.AddCommands(type.GetMembers().OrderBy(x => x.MemberType).ThenBy(x => x.Name).Select(x => GetMemberMenuItem(x, result)));
+			result.AddCommands(type.GetMembers().OrderBy(x => x.MemberType).ThenBy(x => x.Name).Select(x => GetMemberMenuItem(x, result)));
 
-            return result;
-        }
+			return result;
+		}
 
 		private static ActionMenuCommand GetMemberMenuItem(this MemberInfo memberInfo, IMenuCommand parent)
 		{
@@ -69,9 +69,9 @@ namespace ObjectBrowser.MetadataMenu
 			return new ActionMenuCommand(
 				GetMemberInfoString(memberInfo),
 				() => PrintMemberInfoProperties(memberInfo))
-            {
-                Parent = parent
-            };
+			{
+				Parent = parent
+			};
 		}
 
 		private static void PrintMemberInfoProperties(MemberInfo memberInfo)

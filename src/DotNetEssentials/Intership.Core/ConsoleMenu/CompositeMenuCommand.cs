@@ -9,56 +9,56 @@ namespace Intership.Core.ConsoleMenu
 	public class CompositeMenuCommand : MenuCommandBase
 	{
 		private readonly SortedDictionary<int, IMenuCommand> subMenus;
-        private int index;
+		private int index;
 		public CompositeMenuCommand(string name, IMenuCommand parent, IEnumerable<IMenuCommand> menuCommands = null)
-            : base(name)
+			: base(name)
 		{
 			subMenus = new SortedDictionary<int, IMenuCommand>()
-            {
-                [0] = Parent = new GoBackMenuCommand(parent ?? ExitMenuCommand.Instance)
-            };
+			{
+				[0] = Parent = new GoBackMenuCommand(parent ?? ExitMenuCommand.Instance)
+			};
 
-            index = 1;
+			index = 1;
 
-            if (menuCommands != null)
-            {
-                foreach (var nestedItem in menuCommands)
-                {
-                    nestedItem.Parent = this;
-                    subMenus.Add(index++, nestedItem);
-                }
-            }
-        }
+			if (menuCommands != null)
+			{
+				foreach (var nestedItem in menuCommands)
+				{
+					nestedItem.Parent = this;
+					subMenus.Add(index++, nestedItem);
+				}
+			}
+		}
 
-        public void AddCommand(IMenuCommand menuCommand)
-        {
-            if (menuCommand == null) throw new ArgumentNullException(nameof(menuCommand));
-            if (ReferenceEquals(this, menuCommand))
-            {
-                throw new InvalidOperationException("Can't add reference to self.");
-            }
+		public void AddCommand(IMenuCommand menuCommand)
+		{
+			if (menuCommand == null) throw new ArgumentNullException(nameof(menuCommand));
+			if (ReferenceEquals(this, menuCommand))
+			{
+				throw new InvalidOperationException("Can't add reference to self.");
+			}
 
-            menuCommand.Parent = this;
-            subMenus.Add(index++, menuCommand);
-        }
+			menuCommand.Parent = this;
+			subMenus.Add(index++, menuCommand);
+		}
 
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public void AddCommands(IEnumerable<IMenuCommand> menuCommands)
-        {
-            if (menuCommands == null) throw new ArgumentNullException(nameof(menuCommands));
+		[SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+		public void AddCommands(IEnumerable<IMenuCommand> menuCommands)
+		{
+			if (menuCommands == null) throw new ArgumentNullException(nameof(menuCommands));
 
-            if (menuCommands.Any(x => ReferenceEquals(this, x)))
-            {
-                throw new InvalidOperationException("Can't add reference to self.");
-            }
-            foreach (var nestedItem in menuCommands)
-            {
-                nestedItem.Parent = this;
-                subMenus.Add(index++, nestedItem);
-            }
-        }
+			if (menuCommands.Any(x => ReferenceEquals(this, x)))
+			{
+				throw new InvalidOperationException("Can't add reference to self.");
+			}
+			foreach (var nestedItem in menuCommands)
+			{
+				nestedItem.Parent = this;
+				subMenus.Add(index++, nestedItem);
+			}
+		}
 
-        public override void ExecuteCore()
+		protected override void ExecuteCore()
 		{
 			Console.WriteLine(Name);
 
@@ -80,7 +80,7 @@ namespace Intership.Core.ConsoleMenu
 		{
 			while (true)
 			{
-				Console.Write("Type menu number and press ENTER: ");
+				Console.Write("\r\nType menu number and press ENTER: ");
 
 				var input = Console.ReadLine();
 
