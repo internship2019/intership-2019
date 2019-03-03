@@ -5,14 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Intership.Core.ConsoleMenu;
+using ObjectBrowser.Utils;
 
 namespace ObjectBrowser.MetadataMenu
 {
 	public static class ConsoleMenuExtensions
 	{
-		// keeps instance of StringBuilder per thread. Don't forget to clear it after usage ;-)
-		private static readonly ThreadLocal<StringBuilder> StringBuilderLocal = new ThreadLocal<StringBuilder>(() => new StringBuilder(64));
-
 		public static CompositeMenuCommand GetAssembliesMenuItem(this IEnumerable<Assembly> assemblies, string header, IMenuCommand parent = null)
 		{
 			if (assemblies == null)
@@ -54,7 +52,7 @@ namespace ObjectBrowser.MetadataMenu
 
 			var result = new CompositeMenuCommand(type.FullName, parent);
 
-			result.AddCommands(type.GetMembers().OrderBy(x => x.MemberType).ThenBy(x => x.Name).Select(x => GetMemberMenuItem(x, result)));
+			result.AddCommands(ReflectionUtils.ExtractMembers(type).Select(x => GetMemberMenuItem(x, result)));
 
 			return result;
 		}
@@ -67,53 +65,45 @@ namespace ObjectBrowser.MetadataMenu
 			}
 
 			return new ActionMenuCommand(
-				GetMemberInfoString(memberInfo),
-				() => PrintMemberInfoProperties(memberInfo))
+				MemberInfoShortDescriptor.GetMemberInfoString(memberInfo),
+				() => PrintMemberInfo(memberInfo))
 			{
 				Parent = parent
 			};
 		}
 
-		private static void PrintMemberInfoProperties(MemberInfo memberInfo)
+		private static void PrintMemberInfo(MemberInfo memberInfo)
 		{
-			var memberInfoType = memberInfo.GetType(); // get concrete type in runtime
+            Console.WriteLine(MemberInfoShortDescriptor.GetMemberInfoString(memberInfo));
 
-			var properties = memberInfoType.GetProperties();
+            // This should be initialized somewhere else
+            var descriptors = new IMemberInfoDescriptor[] { new MethodInfoDescriptor(), new PropertiesDescriptor() };
 
-			var maxPropertyNameLength = properties.Max(x => x.Name.Length);
+            foreach (var descriptor in descriptors)
+                PrintDescription(descriptor, memberInfo);
+        }
 
-			Console.WriteLine(GetMemberInfoString(memberInfo));
+        /*
+         * Extracts the description from the descriptor and prints it.
+         * If the description is not empty, print an additional empty line.        
+        **/
+        private static void PrintDescription(IMemberInfoDescriptor descriptor, MemberInfo memberInfo)
+        {
+            var description = descriptor.Describe(memberInfo);
 
-			var format = "\t{0,-" + maxPropertyNameLength.ToString() + "}: {1}";
+            if (description == null)
+                return;
 
-			foreach (var propertyInfo in properties.OrderBy(x => x.MemberType).ThenBy(x => x.Name))
-			{
-				Console.WriteLine(format, propertyInfo.Name, propertyInfo.GetValue(memberInfo));
-			}
-		}
+            var descriptionIsEmpty = true;
+            foreach (var descriptionLine in description)
+            {
+                Console.WriteLine(descriptionLine);
 
-		private static string GetMemberInfoString(MemberInfo memberInfo)
-		{
-			if (memberInfo is MethodInfo methodInfo)
-			{
-				var builder = StringBuilderLocal.Value
-					.Append("Method: ")
-					.Append(methodInfo.ReturnType.Name)
-					.Append(' ')
-					.Append(methodInfo.Name)
-					.AppendFormat("({0})", string.Join(", ", methodInfo.GetParameters().Select(parameterInfo => parameterInfo.ParameterType.Name)));
+                if (descriptionIsEmpty) descriptionIsEmpty = false;
+            }
 
-				try
-				{
-					return builder.ToString();
-				}
-				finally
-				{
-					builder.Clear();
-				}
-			}
-
-			return $"{memberInfo.MemberType} {memberInfo.Name}";
-		}
-	}
+            if (!descriptionIsEmpty)
+                Console.WriteLine();
+        }
+    }
 }
