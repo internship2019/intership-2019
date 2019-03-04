@@ -29,7 +29,6 @@ namespace ObjectBrowser.MetadataMenu
 
             yield return "Parameters:";
 
-            var isFirstParameter = false;
             foreach (var parameterInfo in parameters.OrderBy(x => x.Position))
             {
                 var paramDescription = GetParameterDescription(parameterInfo);
@@ -42,10 +41,7 @@ namespace ObjectBrowser.MetadataMenu
                     yield return "\t\t" + line;
 
                 // Add empty line between parameters
-                if (isFirstParameter)
-                    isFirstParameter = false;
-                else
-                    yield return "";
+                yield return "";
             }
         }
 
