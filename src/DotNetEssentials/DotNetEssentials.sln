@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intership.Core", "Intership.Core\Intership.Core.csproj", "{B66AC9D0-1C99-427F-9FEB-D727EAC58C87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBrowserTests", "ObjectBrowser\ObjectBrowserTests\ObjectBrowserTests.csproj", "{F3D79885-71CC-45FC-BD7C-288999040835}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{B66AC9D0-1C99-427F-9FEB-D727EAC58C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B66AC9D0-1C99-427F-9FEB-D727EAC58C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B66AC9D0-1C99-427F-9FEB-D727EAC58C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D79885-71CC-45FC-BD7C-288999040835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D79885-71CC-45FC-BD7C-288999040835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D79885-71CC-45FC-BD7C-288999040835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D79885-71CC-45FC-BD7C-288999040835}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CB0301E0-C198-429F-AE7D-3013470FA919} = {9888D967-B549-40B0-84DB-B755F0368288}
 		{B66AC9D0-1C99-427F-9FEB-D727EAC58C87} = {F46E21D5-6A90-459B-9E16-2947259CE677}
+		{F3D79885-71CC-45FC-BD7C-288999040835} = {9888D967-B549-40B0-84DB-B755F0368288}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {186CB822-D704-4AC8-A85D-BA60682D4044}
