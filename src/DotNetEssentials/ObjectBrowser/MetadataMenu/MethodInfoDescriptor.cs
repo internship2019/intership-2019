@@ -29,13 +29,11 @@ namespace ObjectBrowser.MetadataMenu
 
             yield return "Parameters:";
 
-            var maxNameLen = parameters.Max(x => x.Name.Length);
-            var format = "\t{0,-" + maxNameLen + "}: {1}";
-
             var isFirstParameter = false;
             foreach (var parameterInfo in parameters.OrderBy(x => x.Position))
             {
-                yield return string.Format(format, parameterInfo.Name, GetParameterDescription(parameterInfo));
+                var paramDescription = GetParameterDescription(parameterInfo);
+                yield return $"\t{parameterInfo.Name}: {paramDescription}";
 
                 var membersShortDescription =
                     GetShortMembersInfoDescription(ReflectionUtils.ExtractMembers(parameterInfo.ParameterType));
